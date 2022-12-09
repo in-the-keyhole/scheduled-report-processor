@@ -1,5 +1,7 @@
 package com.solera.scheduledreportprocessor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
@@ -13,6 +15,7 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -20,6 +23,8 @@ import org.springframework.core.io.FileSystemResource;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(BatchConfiguration.class);
 
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
@@ -32,6 +37,9 @@ public class BatchConfiguration {
 
     @Autowired
     private ScheduledReportUpdateListener updateListener;
+
+    @Value("${queryFilter.range}")
+    private String[] queryFilterRange;
 
     @Bean
     public Job sendScheduledReports(JobCompletionNotificationListener listener, Step sendEmail) {
@@ -67,7 +75,10 @@ public class BatchConfiguration {
     public JdbcCursorItemReader<ScheduledReport> reader() {
         JdbcCursorItemReader<ScheduledReport> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
-        // TODO - change SQL as needed
+
+        log.info("queryFilterRange: [ " + queryFilterRange[0] + " - " + queryFilterRange[1] + "]");
+
+        // TODO - change SQL as needed -- can use queryFilterRange to filter resultSet
         reader.setSql("select name from scheduled_report");
         reader.setRowMapper(new ScheduledReportResultRowMapper());
         reader.setMaxRows(10);

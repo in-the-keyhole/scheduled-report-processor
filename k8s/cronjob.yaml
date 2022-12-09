@@ -12,6 +12,12 @@ spec:
         spec:
           containers:
           - name: scheduled-report-processor
-            image: jaimeniswonger/scheduled-report-processor:0.0.1-SNAPSHOT
+            image: jaimeniswonger/scheduled-report-processor:1.0.0
             imagePullPolicy: IfNotPresent
+            # To pass a queryFilter into the job - name and values can be altered to fit the use case, 
+            # but this is an example of passing arguments to the appplication.  If not passed, it will 
+            # default to what is defined in application.properties
+            # env:
+            # - name: queryFilter.range
+            #   value: a,m
           restartPolicy: OnFailure
