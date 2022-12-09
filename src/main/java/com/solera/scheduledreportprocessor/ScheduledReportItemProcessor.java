@@ -1,6 +1,7 @@
 package com.solera.scheduledreportprocessor;
 
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.lang.NonNull;
 
 /*
  * This could be used to determine if the report should still be sent 
@@ -13,7 +14,7 @@ public class ScheduledReportItemProcessor implements ItemProcessor<ScheduledRepo
      * active and has a valid subscription
      */
     @Override
-    public ScheduledReport process(final ScheduledReport scheduledReport) throws Exception {
+    public ScheduledReport process(@NonNull final ScheduledReport scheduledReport) throws Exception {
         // TODO - implement the needed logic or delete this processor and remove it from
         // the BatchConfiguration
         final String name = scheduledReport.getName().toUpperCase();

@@ -59,7 +59,6 @@ public class BatchConfiguration {
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .flow(sendEmail)
-                // .flow(updateScheduledReportRecord)
                 .end()
                 .build();
     }

@@ -1,3 +1,4 @@
+-- # TODO - REMOVE THIS FILE - ONLY HERE FOR TESTING
 DROP TABLE scheduled_report IF EXISTS;
 
 CREATE TABLE scheduled_report (
