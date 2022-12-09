@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: send-scheduled-reports
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: scheduled-report-processor
+            image: jaimeniswonger/scheduled-report-processor:0.0.1-SNAPSHOT
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
