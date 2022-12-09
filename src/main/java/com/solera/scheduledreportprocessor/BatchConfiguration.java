@@ -30,6 +30,29 @@ public class BatchConfiguration {
     @Autowired
     private DataSource dataSource;
 
+    @Bean
+    public Job sendScheduledReports(JobCompletionNotificationListener listener, Step sendEmail) {
+        return jobBuilderFactory.get("sendScheduledReports")
+                .incrementer(new RunIdIncrementer())
+                .listener(listener)
+                .flow(sendEmail)
+                .end()
+                .build();
+    }
+
+    /*
+     * Send the email
+     */
+    @Bean
+    public Step sendEmail() {
+        return stepBuilderFactory.get("sendEmail")
+                .<ScheduledReport, ScheduledReport>chunk(10)
+                .reader(reader())
+                .processor(processor())
+                .writer(writer())
+                .build();
+    }
+
     /*
      * Reader
      * 
@@ -49,34 +72,11 @@ public class BatchConfiguration {
         return reader;
     }
 
+    /*
+     * Item Processor
+     */
     public ScheduledReportItemProcessor processor() {
         return new ScheduledReportItemProcessor();
-    }
-
-    @Bean
-    public Job sendScheduledReports(JobCompletionNotificationListener listener, Step sendEmail) {
-        return jobBuilderFactory.get("sendScheduledReports")
-                .incrementer(new RunIdIncrementer())
-                .listener(listener)
-                .flow(sendEmail)
-                .end()
-                .build();
-    }
-
-    /*
-     * Stubbed this out to flat file just to test the batch flow
-     * 
-     * TODO - Once the writer is changed to send emails, the writer parameter will
-     * need to change to the appropriate type
-     */
-    @Bean
-    public Step sendEmail(FlatFileItemWriter<ScheduledReport> writer) {
-        return stepBuilderFactory.get("sendEmail")
-                .<ScheduledReport, ScheduledReport>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer)
-                .build();
     }
 
     /*
@@ -104,4 +104,5 @@ public class BatchConfiguration {
         aggregator.setFieldExtractor(beanWrapperFieldExtractor);
         return aggregator;
     }
+
 }
