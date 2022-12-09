@@ -4,6 +4,8 @@ metadata:
   name: send-scheduled-reports
 spec:
   schedule: "* * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:

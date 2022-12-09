@@ -25,6 +25,9 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED!");
+        } else {
+            log.error("!!! JOB DID NOT COMPLETE - STATUS: " + jobExecution.getStatus());
+            // TODO - handle failure - send email to support?
         }
     }
 
