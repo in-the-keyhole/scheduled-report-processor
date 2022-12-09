@@ -10,13 +10,12 @@ import org.springframework.lang.NonNull;
 public class ScheduledReportItemProcessor implements ItemProcessor<ScheduledReport, ScheduledReport> {
 
     /*
-     * This currently is a noop - but could be used for checking if the user is
-     * active and has a valid subscription
+     * This currently is a noop (it just transforms name to uppercase) - but it
+     * could be used for checking if the user is active and has a valid subscription
      */
     @Override
     public ScheduledReport process(@NonNull final ScheduledReport scheduledReport) throws Exception {
-        // TODO - implement the needed logic or delete this processor and remove it from
-        // the BatchConfiguration
+        // TODO - implement the needed logic
         final String name = scheduledReport.getName().toUpperCase();
         final ScheduledReport transformedScheduledReport = new ScheduledReport(name);
         return transformedScheduledReport;
