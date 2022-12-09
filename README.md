@@ -11,3 +11,10 @@
 
 ## If the solera k3d cluster is not the default kubeconfig
 `k3d kubeconfig merge solera --kubeconfig-merge-default`
+
+
+## To run 
+`./mvnw spring-boot:run`
+
+## To build image
+`./mvnw spring-boot:build-image`
