@@ -30,6 +30,9 @@ public class BatchConfiguration {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private ScheduledReportUpdateListener updateListener;
+
     @Bean
     public Job sendScheduledReports(JobCompletionNotificationListener listener, Step sendEmail) {
         return jobBuilderFactory.get("sendScheduledReports")
@@ -50,6 +53,7 @@ public class BatchConfiguration {
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
+                .listener(updateListener)
                 .build();
     }
 
